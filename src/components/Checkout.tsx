@@ -321,9 +321,20 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
     }
   };
 
+  // Detect if we're in Messenger's in-app browser
+  const isMessengerBrowser = useMemo(() => {
+    return /FBAN|FBAV/i.test(navigator.userAgent) || 
+           /FB_IAB/i.test(navigator.userAgent);
+  }, []);
+
   const handleDownloadQRCode = (qrCodeUrl: string, paymentMethodName: string) => {
-    // Simple direct link approach - works in most browsers
-    // For Messenger's browser, this may not trigger download but won't cause errors
+    // Prevent default navigation if download doesn't work
+    if (isMessengerBrowser) {
+      // In Messenger, downloads don't work - users can long-press the QR code image
+      return;
+    }
+    
+    // For regular browsers, try download
     try {
       const link = document.createElement('a');
       link.href = qrCodeUrl;
@@ -334,7 +345,6 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
       document.body.removeChild(link);
     } catch (error) {
       console.error('Download failed:', error);
-      // If download fails silently, at least we didn't break the page
     }
   };
 
@@ -633,14 +643,19 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
                 </div>
                 <div className="flex-shrink-0 w-full md:w-auto flex flex-col items-center md:items-start">
                   <h3 className="font-medium text-cafe-text mb-4 text-center md:text-left w-full md:w-auto">Other Option</h3>
-                  <button
-                    onClick={() => handleDownloadQRCode(selectedPaymentMethod.qr_code_url, selectedPaymentMethod.name)}
-                    className="px-3 py-1.5 mb-2 glass-strong rounded-lg hover:bg-cafe-primary/20 transition-colors duration-200 text-sm font-medium text-cafe-text flex items-center gap-2 mx-auto md:mx-0"
-                    title="Download QR code"
-                  >
-                    <Download className="h-4 w-4" />
-                    <span>Download QR</span>
-                  </button>
+                  {!isMessengerBrowser && (
+                    <button
+                      onClick={() => handleDownloadQRCode(selectedPaymentMethod.qr_code_url, selectedPaymentMethod.name)}
+                      className="px-3 py-1.5 mb-2 glass-strong rounded-lg hover:bg-cafe-primary/20 transition-colors duration-200 text-sm font-medium text-cafe-text flex items-center gap-2 mx-auto md:mx-0"
+                      title="Download QR code"
+                    >
+                      <Download className="h-4 w-4" />
+                      <span>Download QR</span>
+                    </button>
+                  )}
+                  {isMessengerBrowser && (
+                    <p className="text-xs text-cafe-textMuted mb-2 text-center md:text-left">Long-press the QR code to save</p>
+                  )}
                   <img 
                     src={selectedPaymentMethod.qr_code_url} 
                     alt={`${selectedPaymentMethod.name} QR Code`}
