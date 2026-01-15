@@ -409,7 +409,7 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
 
     const orderDetails = generateOrderMessage();
     const encodedMessage = encodeURIComponent(orderDetails);
-    const messengerUrl = `https://m.me/AmberKinGamerXtream?text=${encodedMessage}`;
+    const messengerUrl = `https://m.me/Hatred03?text=${encodedMessage}`;
     
     window.open(messengerUrl, '_blank');
     
