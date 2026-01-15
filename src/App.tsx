@@ -76,8 +76,22 @@ function MainApp() {
   }, [menuItems, selectedCategory, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-cafe-darkBg">
-      <Header 
+    <div 
+      className="min-h-screen relative bg-image-container"
+      style={{
+        backgroundImage: 'url(/image.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      {/* Responsive dark overlay for better text readability */}
+      <div 
+        className="absolute inset-0 bg-overlay pointer-events-none"
+        style={{ zIndex: 0 }}
+      />
+      <div className="relative" style={{ zIndex: 1 }}>
+        <Header
         cartItemsCount={cart.getTotalItems()}
         onCartClick={() => handleViewChange('cart')}
         onMenuClick={() => handleViewChange('menu')}
@@ -130,6 +144,7 @@ function MainApp() {
           onCartClick={() => handleViewChange('cart')}
         />
       )}
+      </div>
     </div>
   );
 }

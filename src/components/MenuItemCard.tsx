@@ -73,7 +73,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
     <>
       <div 
         onClick={handleCardClick}
-        className={`flex flex-row items-center transition-all duration-300 group rounded-xl p-1.5 md:p-2 gap-1.5 md:gap-2 ${!item.available ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+        className={`flex flex-col transition-all duration-300 group rounded-lg p-1.5 sm:p-2 gap-1.5 ${!item.available ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
         style={{
           background: '#8B0000',
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
@@ -95,8 +95,8 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           }
         }}
       >
-        {/* Square Game Icon on Left */}
-        <div className="relative w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg transition-transform duration-300 group-hover:scale-105">
+        {/* Game Icon on Top */}
+        <div className="relative w-full aspect-square rounded-md overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg transition-transform duration-300 group-hover:scale-105">
           {item.image ? (
             <img
               src={item.image}
@@ -115,11 +115,11 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           </div>
         </div>
         
-        {/* Game Name and Info on Right */}
-        <div className="flex-1 overflow-hidden min-w-0">
+        {/* Game Name and Subtitle Below */}
+        <div className="flex flex-col gap-0.5">
           <h4 
             ref={nameRef}
-            className={`text-white font-bold whitespace-nowrap text-base sm:text-lg mb-1 ${
+            className={`text-white font-bold text-center text-xs sm:text-sm line-clamp-1 ${
               shouldScroll ? 'animate-scroll-text' : ''
             }`}
             style={shouldScroll ? {
@@ -137,7 +137,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
             )}
           </h4>
           {item.subtitle && (
-            <p className="text-xs sm:text-sm text-gray-300">
+            <p className="text-[10px] sm:text-xs text-gray-300 text-center line-clamp-1">
               {item.subtitle}
             </p>
           )}
